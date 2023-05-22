@@ -3,7 +3,7 @@
 echo ""
 rm test
 
-g++ -o test main.cpp InputParameters.cpp PointCloud.cpp
+g++ -o test main.cpp ./src/InputParameters.cpp ./src/PointCloud.cpp -I./include
 ./test
 
 echo ""

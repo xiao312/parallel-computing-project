@@ -4,7 +4,7 @@
 int main()
 {
 
-    InputParameters params("INPUT.txt");
+    InputParameters params("./input/INPUT.txt");
     std::cout << "isHexahedral: " << params.isHexahedral() << std::endl;
     std::cout << "lx: " << params.getLx() << std::endl;
     std::cout << "ly: " << params.getLy() << std::endl;
@@ -23,7 +23,7 @@ int main()
 
     // Load the point cloud from file:
     PointCloud cloud;
-    cloud.loadFromFile("POINTS.txt");
+    cloud.loadFromFile("./input/POINTS.txt");
 
     // Now you can access the point data like this:
     int i_ = 0;
