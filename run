@@ -1,0 +1,9 @@
+#!/bin/bash
+
+echo ""
+rm test
+
+g++ -o test main.cpp InputParameters.cpp PointCloud.cpp
+./test
+
+echo ""
