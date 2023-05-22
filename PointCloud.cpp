@@ -9,9 +9,7 @@ void PointCloud::loadFromFile(const std::string& filename) {
     Point point;
     char c; // used to read the commas and parentheses
     while (file >> c) {
-        if (c == '(' || c == '[') { // Skip opening brackets
-            continue;
-        } else if (c == ')' || c == ']') { // Skip closing brackets
+        if (c == '(' || c == ')') { // Skip brackets
             continue;
         }
 
