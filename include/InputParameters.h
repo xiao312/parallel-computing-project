@@ -20,7 +20,7 @@ public:
     bool supportPeriodicBoundary() const { return m_support_Periodic_Boundary; }
     bool multiParallelStrategies() const { return m_multi_parallel_strategies; }
     std::string getPointsPath() const { return m_points_path; }
-    std::string getVPath() const { return m_v_path; }
+    std::string getVPath() const { return m_venergy_path; }
     std::string getDistributionPath() const { return m_distribution_path; }
 
 private:
@@ -36,7 +36,7 @@ private:
     bool m_support_Periodic_Boundary;
     bool m_multi_parallel_strategies;
     std::string m_points_path;
-    std::string m_v_path;
+    std::string m_venergy_path;
     std::string m_distribution_path;
 };
 

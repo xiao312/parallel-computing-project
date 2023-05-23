@@ -4,7 +4,10 @@
 int main()
 {
 
+    // Load input parameters from file:
     InputParameters params("./input/INPUT.txt");
+
+    // Print input parameter values:
     std::cout << "isHexahedral: " << params.isHexahedral() << std::endl;
     std::cout << "lx: " << params.getLx() << std::endl;
     std::cout << "ly: " << params.getLy() << std::endl;
@@ -17,15 +20,15 @@ int main()
     std::cout << "support_Periodic_Boundary: " << params.supportPeriodicBoundary() << std::endl;
     std::cout << "multi_parallel_strategies: " << params.multiParallelStrategies() << std::endl;
     std::cout << "points_path: " << params.getPointsPath() << std::endl;
-    std::cout << "v_path: " << params.getVPath() << std::endl;
+    std::cout << "venergy_path: " << params.getVPath() << std::endl;
     std::cout << "distribution_path: " << params.getDistributionPath() << std::endl;
 
 
     // Load the point cloud from file:
     PointCloud cloud;
-    cloud.loadFromFile("./input/POINTS.txt");
+    cloud.loadFromFile(params.getPointsPath());
 
-    // Now you can access the point data like this:
+    // Print information about the point cloud:
     int i_ = 0;
     std::cout << "\nNumber of points: " << cloud.points.size() << '\n';
     for (const auto& point : cloud.points) {

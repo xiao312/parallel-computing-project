@@ -9,6 +9,6 @@ support_SH 0
 diago_lib lapack
 support_Periodic_Boundary 0
 multi_parallel_strategies 0
-points_path ./POINTS.txt
-venergy_path ./Venergy.txt
-distribution_path ./Distribution.txt
+points_path ./input/POINTS.txt
+venergy_path ./input/Venergy.txt
+distribution_path ./input/Distribution.txt

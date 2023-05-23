@@ -23,7 +23,7 @@ InputParameters::InputParameters(const std::string& filename)
         else if (key == "support_Periodic_Boundary") { m_support_Periodic_Boundary = (value == "1"); }
         else if (key == "multi_parallel_strategies") { m_multi_parallel_strategies = (value == "1"); }
         else if (key == "points_path") { m_points_path = value; }
-        else if (key == "v_path") { m_v_path = value; }
+        else if (key == "venergy_path") { m_venergy_path = value; }
         else if (key == "distribution_path") { m_distribution_path = value; }
     }
 }
@@ -44,7 +44,7 @@ InputParameters::InputParameters(const std::string& filename)
 //     std::cout << "support_Periodic_Boundary: " << params.supportPeriodicBoundary() << std::endl;
 //     std::cout << "multi_parallel_strategies: " << params.multiParallelStrategies() << std::endl;
 //     std::cout << "points_path: " << params.getPointsPath() << std::endl;
-//     std::cout << "v_path: " << params.getVPath() << std::endl;
+//     std::cout << "venergy_path: " << params.getVPath() << std::endl;
 //     std::cout << "distribution_path: " << params.getDistributionPath() << std::endl;
 //     return 0;
 // }
