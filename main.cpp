@@ -1,5 +1,6 @@
 #include "InputParameters.h"
 #include "PointCloud.h"
+#include "Distribution.h"
 
 int main()
 {
@@ -36,6 +37,17 @@ int main()
         std::cout << "x=" << point.x << ", y=" << point.y << ", z=" << point.z << '\n';
     }
 
+    Distribution Distribution(params.getDistributionPath());
+    std::cout << "\nCutoff: " << Distribution.getCutoff() << std::endl;
+    std::cout << "Dr: " << Distribution.getDr() << std::endl;
+    std::cout << "Mesh: " << Distribution.getMesh() << std::endl;
+    std::cout << "L: " << Distribution.getL() << std::endl;
+    std::cout << "F values:" << std::endl;
+    const auto& fValues = Distribution.getF();
+    for(auto f : fValues) {
+        std::cout << f << " ";
+    }
+    std::cout << std::endl;
 
 
     return 0;

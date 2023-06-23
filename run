@@ -2,7 +2,7 @@
 
 echo ""
 
-g++ -o test main.cpp ./src/InputParameters.cpp ./src/PointCloud.cpp -I./include
+g++ -o test main.cpp ./src/InputParameters.cpp ./src/PointCloud.cpp ./src/Distribution.cpp -I./include
 ./test
 rm test
 
