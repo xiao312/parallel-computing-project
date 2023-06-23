@@ -1,6 +1,7 @@
 #include "InputParameters.h"
 #include "PointCloud.h"
 #include "Distribution.h"
+#include "VDistribution.h"
 
 int main()
 {
@@ -32,10 +33,15 @@ int main()
     // Print information about the point cloud:
     int i_ = 0;
     std::cout << "\nNumber of points: " << cloud.points.size() << '\n';
-    for (const auto& point : cloud.points) {
-        std::cout << "Point " << i_++ << ":\n";
-        std::cout << "x=" << point.x << ", y=" << point.y << ", z=" << point.z << '\n';
+    for (std::size_t i = 0; i < cloud.points.size(); ++i) {
+            double x_i = cloud.points[i].x;
+            double y_i = cloud.points[i].y;
+            double z_i = cloud.points[i].z;
+
+            std::cout << "Point " << i << ":\n";
+            std::cout << "x=" << x_i << ", y=" << y_i << ", z=" << z_i << '\n';
     }
+
 
     Distribution Distribution(params.getDistributionPath());
     std::cout << "\nCutoff: " << Distribution.getCutoff() << std::endl;
@@ -75,9 +81,34 @@ int main()
         std::cout << count_ << std::endl;
     }
 
+    VDistribution VDistribution(params.getVPath());
+    std::cout << "\nnx: " << VDistribution.getNx() << std::endl;
+    std::cout << "ny: " << VDistribution.getNy() << std::endl;
+    std::cout << "nz: " << VDistribution.getNz() << std::endl;
+    std::cout << "ngrid: " << VDistribution.getNgrid() << std::endl;
+    std::cout << "V values:";
 
+    int Vcount_ = 0;
+    std::map vMap = VDistribution.getVMap();
 
-
+    for (int x=1; x<=VDistribution.getNx();x++) {
+        for (int y=1; y<=VDistribution.getNx();y++) {
+            for (int z=1; z<=VDistribution.getNz();z++) {
+                std::string tag_ = "(" + std::to_string(x) + " " + std::to_string(y) + " " + std::to_string(z) + ")";
+                auto iter = vMap.find(tag_);
+                if (iter != vMap.end()) {
+                    // Key found in map
+                    Vcount_++;
+                }
+            }
+        }
+    }
+    if (Vcount_ == (int) VDistribution.getNgrid()) {
+        std::cout << "V values in map type: Number of values check with grid size!" << std::endl;
+    }
+    else {
+        std::cout << Vcount_ << std::endl;
+    }
     
 
 

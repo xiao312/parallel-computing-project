@@ -2,8 +2,9 @@
 
 echo ""
 
-g++ -o test main.cpp ./src/InputParameters.cpp ./src/PointCloud.cpp ./src/Distribution.cpp -I./include
+g++ -o test main.cpp ./src/InputParameters.cpp ./src/PointCloud.cpp ./src/Distribution.cpp ./src/VDistribution.cpp -I./include
 ./test
+# /usr/bin/time -v ./run
 rm test
 
 echo ""
