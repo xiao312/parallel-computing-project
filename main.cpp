@@ -42,12 +42,21 @@ int main()
     std::cout << "Dr: " << Distribution.getDr() << std::endl;
     std::cout << "Mesh: " << Distribution.getMesh() << std::endl;
     std::cout << "L: " << Distribution.getL() << std::endl;
-    std::cout << "F values:" << std::endl;
+    std::cout << "F values:";
+
     const auto& fValues = Distribution.getF();
-    for(auto f : fValues) {
-        std::cout << f << " ";
+    int count = 0;
+    for(double f : fValues) {
+        // std::cout << f << " ";
+        count++;
     }
-    std::cout << std::endl;
+    // std::cout << "\nCount = " << count << std::endl;
+
+    if (count == (int) Distribution.getMesh()) {
+        std::cout << " Number of values check with mesh size!" << std::endl;
+    }
+
+    
 
 
     return 0;
