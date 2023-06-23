@@ -56,6 +56,28 @@ int main()
         std::cout << " Number of values check with mesh size!" << std::endl;
     }
 
+    int count_ = 0;
+    double tag_ = 0;
+    std::map fMap = Distribution.getFMap();
+
+    while (tag_ <= Distribution.getCutoff()){
+        auto iter = fMap.find(std::to_string(tag_));
+        if (iter != fMap.end()) {
+            // Key found in map
+            count_++;
+            tag_ += Distribution.getDr();
+        }
+    }
+    if (count_ == (int) Distribution.getMesh()) {
+        std::cout << "F values in map type: Number of values check with mesh size!" << std::endl;
+    }
+    else {
+        std::cout << count_ << std::endl;
+    }
+
+
+
+
     
 
 

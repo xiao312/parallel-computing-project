@@ -6,7 +6,6 @@
 Distribution::Distribution(const std::string& filename) {
     std::ifstream inputFile(filename);
     std::string line;
-    std::string f_values; // added variable to store all "f:" values
     
     if (inputFile.is_open()) {
         getline(inputFile, line);
@@ -24,55 +23,24 @@ Distribution::Distribution(const std::string& filename) {
 
             size_t pos = 0;
             std::string token;
+            int index = 0;
             while ((pos = line.find(',')) != std::string::npos) {
                 token = line.substr(0, pos);
+                double f_value = stod(token);
+                std::string tag = std::to_string(index *dr_);
+
                 f_.push_back(stod(token));
+
+                fmap_.insert(std::make_pair(tag, f_value));
+                index++;
+
                 line.erase(0, pos + 1);
             }
-            // f_.push_back(stod(line));
-
         }
-        
-        // int count = 0;
-        // for(double f : f_) {
-        //     std::cout << f << " ";
-        //     count++;
-        // }
-        // std::cout << "\nCount = " << count << std::endl;
 
         inputFile.close();
     }
 
-    // while (std::getline(inputFile, line)) {
-    //     std::istringstream iss(line);
-    //     std::string parameterName;
-    //     iss >> parameterName;
-    //     if (parameterName == "cutoff") {
-    //         iss >> cutoff_;
-    //     } else if (parameterName == "dr") {
-    //         iss >> dr_;
-    //     } else if (parameterName == "mesh") {
-    //         iss >> mesh_;
-    //     } else if (parameterName == "l") {
-    //         iss >> l_;
-    //     } else if (parameterName == "f:") {
-    //         continue;
-    //     } 
-        
-    //     // else {
-    //     //     // double value;
-    //     //     // while (iss >> value) {
-    //     //     //     f_.push_back(value);
-    //     //     //     // f_values += std::to_string(value) + " "; // append each value to the f_values string
-    //     //     // }
-
-    //     //     while (std::getline(iss, f_values, ',')) {
-    //     //                 double num = std::stod(f_values);
-    //     //                 f_.push_back(num);
-    //     //             }
-
-    //     // }
-    // }
 }
 
 double Distribution::getCutoff() const {
@@ -93,4 +61,8 @@ double Distribution::getL() const {
 
 const std::vector<double>& Distribution::getF() const {
     return f_;
+}
+
+const std::map<std::string, double>& Distribution::getFMap() const {
+    return fmap_;
 }
