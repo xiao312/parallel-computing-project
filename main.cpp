@@ -5,7 +5,6 @@
 #include <cmath>
 #include <cstring>
 #include <iomanip>
-#include <chrono>
 #include <gsl/gsl_interp.h>
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_spline.h>
@@ -41,7 +40,6 @@ char* print_matrix( const char* desc, int m, int n, double* a, int lda ) {
 int main()
 {
 
-    auto start_1 = std::chrono::high_resolution_clock::now();
 
     // Load input parameters from file:
     // InputParameters params("./input/INPUT.txt");
@@ -78,16 +76,12 @@ int main()
     outputFile << std::left << std::setw(colWidth) << " venergy_path: "              << params.getVPath()                 << std::endl;
     outputFile << std::left << std::setw(colWidth) << " distribution_path: "         << params.getDistributionPath()      << std::endl;
     
-    auto stop_1 = std::chrono::high_resolution_clock::now();
-    auto duration_1 = std::chrono::duration_cast<std::chrono::microseconds>(stop_1 - start_1);
-    outputFile << "Time used: " << duration_1.count() << " microseconds" << std::endl;
 
     outputFile << "\\*" << line << "*\\" << std::endl;
     outputFile.close();
 
 
 
-    auto start_2 = std::chrono::high_resolution_clock::now();
 
     // Load the point cloud from file:
     PointCloud cloud;
@@ -109,14 +103,10 @@ int main()
                                  << std::right << std::setw(6) << y_i 
                                  << std::right << std::setw(6) << z_i << ")" << std::endl;
     }
-    auto stop_2 = std::chrono::high_resolution_clock::now();
-    auto duration_2 = std::chrono::duration_cast<std::chrono::microseconds>(stop_2 - start_2);
-    outputFile_ << "Time used: " << duration_2.count() << " microseconds" << std::endl;
     outputFile_ << "\\*" << line << "*\\" << std::endl;
     outputFile_.close();
 
 
-    auto start_3 = std::chrono::high_resolution_clock::now();
 
     Distribution Distribution(params.getDistributionPath());
     double cutoff   = Distribution.getCutoff();
@@ -146,14 +136,10 @@ int main()
     _outputFile << std::left << std::setw(colWidth) << " nz: "    << nz << std::endl;
     _outputFile << std::left << std::setw(colWidth) << " ngrid: " << VDistribution.getNgrid() << std::endl;
 
-    auto stop_3 = std::chrono::high_resolution_clock::now();
-    auto duration_3 = std::chrono::duration_cast<std::chrono::microseconds>(stop_3 - start_3);
-    _outputFile << "Time used: " << duration_3.count() << " microseconds" << std::endl;
     _outputFile << "\\*" << line << "*\\" << std::endl;
     _outputFile.close();
 
     
-    // auto start_4 = std::chrono::high_resolution_clock::now();
 
     int LDA = N, info;
     double w[N];
@@ -167,12 +153,8 @@ int main()
     int dz = lz / nz;
     int dv = dx * dy * dz;
 
-    // auto stop_4 = std::chrono::high_resolution_clock::now();
-    // auto duration_4 = std::chrono::duration_cast<std::chrono::microseconds>(stop_4 - start_4);
-    // outputFile << "Time used: " << duration_4.count() << " microseconds" << std::endl;
 
-    auto start_6 = std::chrono::high_resolution_clock::now();
-
+    #pragma omp parallel for collapse(3) shared(cloud,a,Distribution,mesh,dv,cutoff,nx,ny,nz,dx,dy,dz)
     for (int x_ = 1; x_ <= nx; x_++) {
         for (int y_ = 1; y_ <= ny; y_++) {
             for (int z_ = 1; z_ <= nz; z_++) {
@@ -193,16 +175,16 @@ int main()
                     
                     if (r_i > cutoff) {continue;}
                     else {
-                            
-                            gsl_interp_accel *acc = gsl_interp_accel_alloc(); // 创建加速器对象
-                            gsl_spline *spline = gsl_spline_alloc(gsl_interp_cspline, mesh); // 创建插值对象
+                            // Interpolate the distribution function:
+                            gsl_interp_accel *acc = gsl_interp_accel_alloc(); 
+                            gsl_spline *spline = gsl_spline_alloc(gsl_interp_cspline, mesh);
 
-                            gsl_spline_init(spline, Distribution.getR(), Distribution.getFval(), mesh); // 初始化插值对象
+                            gsl_spline_init(spline, Distribution.getR(), Distribution.getFval(), mesh); 
 
-                            f_i = gsl_spline_eval(spline, r_i, acc); // 对新点进行插值计算
+                            f_i = gsl_spline_eval(spline, r_i, acc);
                             
-                            gsl_spline_free(spline); // 释放插值对象
-                            gsl_interp_accel_free(acc); // 释放加速器对象
+                            gsl_spline_free(spline);
+                            gsl_interp_accel_free(acc);
                     }
 
 
@@ -228,6 +210,7 @@ int main()
                             }
 
                             double incre_ij = f_i * V * f_j * dv;
+                            #pragma omp atomic
                             a[i * N + j] += incre_ij;
                         }
 
@@ -246,9 +229,6 @@ int main()
     of << "\\*" << line << "*\\" << std::endl;
     of << " " << print_matrix( "H matrix", N, N,  a, LDA ) << std::endl;
 
-    auto stop_6 = std::chrono::high_resolution_clock::now();
-    auto duration_6 = std::chrono::duration_cast<std::chrono::microseconds>(stop_6 - start_6);
-    of << "Time used: " << duration_6.count() << " microseconds" << std::endl;
 
     of << "\\*" << line << "*\\" << std::endl;
     of.close();
@@ -256,7 +236,6 @@ int main()
 
 
 
-    auto start_7 = std::chrono::high_resolution_clock::now();
 
     info = LAPACKE_dsyev(LAPACK_ROW_MAJOR, 'V', 'L', N, a, LDA, w );
 
@@ -279,9 +258,6 @@ int main()
     _of << "\\*" << line << "*\\" << std::endl;
     _of << " " << print_matrix( "Eigenvectors (stored columnwise)", N, N, a, LDA ) << std::endl;
 
-    auto stop_7 = std::chrono::high_resolution_clock::now();
-    auto duration_7 = std::chrono::duration_cast<std::chrono::microseconds>(stop_7 - start_7);
-    _of << "Time used: " << duration_7.count() << " microseconds" << std::endl;
     
     _of << "\\*" << line << "*\\" << std::endl;
     _of.close();
