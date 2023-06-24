@@ -21,12 +21,20 @@ Distribution::Distribution(const std::string& filename) {
         if (line == "f:") {
             getline(inputFile, line);
 
+            r_ = new double[mesh_]; // Dynamically allocate memory for r_
+            fval_ = new double[mesh_];
+
             size_t pos = 0;
             std::string token;
             int index = 0;
             while ((pos = line.find(',')) != std::string::npos) {
                 token = line.substr(0, pos);
                 double f_value = stod(token);
+
+                r_[index] = index * dr_;
+                fval_[index] = stod(token);
+
+                // std::cout << r_[index] << "  " << fval_[index] << std::endl;
                 std::string tag = std::to_string(index *dr_);
 
                 f_.push_back(stod(token));
@@ -42,6 +50,12 @@ Distribution::Distribution(const std::string& filename) {
     }
 
 }
+
+Distribution::~Distribution() {
+    delete[] r_;
+    delete[] fval_;
+}
+
 
 double Distribution::getCutoff() const {
     return cutoff_;
