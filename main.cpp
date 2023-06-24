@@ -111,7 +111,7 @@ int main()
     Distribution Distribution(params.getDistributionPath());
     double cutoff   = Distribution.getCutoff();
     int mesh        = Distribution.getMesh();
-    std::map fMap   = Distribution.getFMap();
+    std::map<std::string, double> fMap   = Distribution.getFMap();
 
 
     std::ofstream _outputFile("compute.log", std::ios::app);
@@ -128,7 +128,7 @@ int main()
     int nx = VDistribution.getNx();
     int ny = VDistribution.getNy();
     int nz = VDistribution.getNz();
-    std::map vMap = VDistribution.getVMap();
+    std::map<std::string, double> vMap = VDistribution.getVMap();
 
     _outputFile << std::endl;
     _outputFile << std::left << std::setw(colWidth) << " nx: "    << nx << std::endl;
