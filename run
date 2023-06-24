@@ -2,9 +2,10 @@
 
 echo ""
 
-g++ -o test main.cpp ./src/InputParameters.cpp ./src/PointCloud.cpp ./src/Distribution.cpp ./src/VDistribution.cpp -I./include -lgsl -lgslcblas -lm -I/usr/local/include/Eigen/src/misc/
-./test
-# /usr/bin/time -v ./run
-rm test
+rm *.log 2>/dev/null
+g++ -o test main.cpp ./src/InputParameters.cpp ./src/PointCloud.cpp ./src/Distribution.cpp ./src/VDistribution.cpp -I./include -lgsl -lgslcblas -lm -I${BLAS_INC} -L${BLAS_LIB} -lopenblas
+# ./test
+/usr/bin/time -v ./test
+rm test 2>/dev/null
 
 echo ""
