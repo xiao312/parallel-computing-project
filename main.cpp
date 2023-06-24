@@ -111,7 +111,6 @@ int main()
     Distribution Distribution(params.getDistributionPath());
     double cutoff   = Distribution.getCutoff();
     int mesh        = Distribution.getMesh();
-    std::map<std::string, double> fMap   = Distribution.getFMap();
 
 
     std::ofstream _outputFile("compute.log", std::ios::app);

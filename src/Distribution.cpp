@@ -21,7 +21,7 @@ Distribution::Distribution(const std::string& filename) {
         if (line == "f:") {
             getline(inputFile, line);
 
-            r_ = new double[mesh_]; // Dynamically allocate memory for r_
+            r_ = new double[mesh_];     // Dynamically allocate memory for r_
             fval_ = new double[mesh_];
 
             size_t pos = 0;
@@ -34,12 +34,6 @@ Distribution::Distribution(const std::string& filename) {
                 r_[index] = index * dr_;
                 fval_[index] = stod(token);
 
-                // std::cout << r_[index] << "  " << fval_[index] << std::endl;
-                std::string tag = std::to_string(index *dr_);
-
-                f_.push_back(stod(token));
-
-                fmap_.insert(std::make_pair(tag, f_value));
                 index++;
 
                 line.erase(0, pos + 1);
@@ -71,12 +65,4 @@ int Distribution::getMesh() const {
 
 double Distribution::getL() const {
     return l_;
-}
-
-const std::vector<double>& Distribution::getF() const {
-    return f_;
-}
-
-const std::map<std::string, double>& Distribution::getFMap() const {
-    return fmap_;
 }
