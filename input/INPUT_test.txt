@@ -1,0 +1,14 @@
+isHexahedral                    0
+lx                              1000
+ly                              1000
+lz                              1000
+thetaxy                         0
+thetayz                         0
+thetaxz                         0
+support_SH                      0
+diago_lib                       lapack
+support_Periodic_Boundary       0
+multi_parallel_strategies       0
+points_path                     ../cases/Point/point10.txt
+venergy_path                    ../cases/V/V512.txt
+distribution_path               ../cases/Distribution/distribution80.txt
