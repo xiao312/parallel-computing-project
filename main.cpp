@@ -42,8 +42,8 @@ int main()
 
 
     // Load input parameters from file:
-    // InputParameters params("./input/INPUT.txt");
-    InputParameters params("./input/INPUT_test.txt");
+    InputParameters params("./input/INPUT.txt");
+    // InputParameters params("./input/INPUT_test.txt");
     int lx = params.getLx();
     int ly = params.getLy();
     int lz = params.getLz();

@@ -10,5 +10,5 @@ diago_lib                       lapack
 support_Periodic_Boundary       0
 multi_parallel_strategies       0
 points_path                     ../cases/Point/point10.txt
-venergy_path                    ../cases/V/V512.txt
+venergy_path                    ../cases/V/V256.txt
 distribution_path               ../cases/Distribution/distribution80.txt
